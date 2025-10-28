@@ -6,17 +6,22 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { MdArrowBack, MdOpenInNew } from "react-icons/md";
 import { useParams } from "next/navigation";
+import { useState } from "react";
 
 export default function CharacterDetailPage() {
   const params = useParams<{ id: string }>();
+  const [page, setPage] = useState(1);
   const { data: character, isLoading: characterLoading } = useQuery({
     queryKey: ["character", params.id],
     queryFn: () => api.getCharacter(params.id).then((res) => res.data.docs[0]),
   });
 
   const { data: quotes, isLoading: quotesLoading } = useQuery({
-    queryKey: ["character-quotes", params.id],
-    queryFn: () => api.getCharacterQuotes(params.id).then((res) => res.data),
+    queryKey: ["character-quotes", params.id, page],
+    queryFn: () =>
+      api
+        .getCharacterQuotes(params.id, { limit: 5, page: page })
+        .then((res) => res.data),
     enabled: !!params.id,
   });
 
@@ -106,13 +111,13 @@ export default function CharacterDetailPage() {
           </h2>
           {quotesLoading ? (
             <div className="grid grid-cols-1 gap-4">
-              {[...Array(6)].map((_, i) => (
+              {[...Array(5)].map((_, i) => (
                 <div key={i} className="glass rounded-xl h-24 animate-pulse" />
               ))}
             </div>
           ) : quotes && quotes.docs.length > 0 ? (
             <div className="grid grid-cols-1 gap-4">
-              {quotes.docs.slice(0, 20).map((quote) => (
+              {quotes.docs.map((quote) => (
                 <div
                   key={quote._id}
                   className="glass rounded-xl p-6 hover:bg-white/10 transition-colors"
@@ -130,11 +135,27 @@ export default function CharacterDetailPage() {
               </p>
             </div>
           )}
-          {quotes && quotes.total > 20 && (
-            <div className="text-center mt-6">
-              <p className="text-gray-400">
-                Showing 20 of {quotes.total} quotes
-              </p>
+          {quotes && quotes.total > 5 && (
+            <div className="flex justify-center items-center gap-4 mt-6">
+              <button
+                onClick={() => setPage((old) => Math.max(old - 1, 1))}
+                disabled={page === 1}
+                className="px-4 py-2 bg-primary-500 text-white rounded-lg disabled:bg-gray-600 transition-colors"
+              >
+                Previous
+              </button>
+              <span className="text-gray-400">
+                Page {quotes.page} of {quotes.pages}
+              </span>
+              <button
+                onClick={() =>
+                  setPage((old) => Math.min(old + 1, quotes.pages))
+                }
+                disabled={page === quotes.pages}
+                className="px-4 py-2 bg-primary-500 text-white rounded-lg disabled:bg-gray-600 transition-colors"
+              >
+                Next
+              </button>
             </div>
           )}
         </motion.div>

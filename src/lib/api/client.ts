@@ -19,16 +19,16 @@ export const api = {
   // Movies
   getMovies: () => apiClient.get<ApiResponse<Movie>>("/movie"),
   getMovie: (id: string) => apiClient.get<ApiResponse<Movie>>(`/movie/${id}`),
-  getMovieQuotes: (id: string) =>
-    apiClient.get<ApiResponse<Quote>>(`/movie/${id}/quote`),
+  getMovieQuotes: (id: string, params?: Record<string, unknown>) =>
+    apiClient.get<ApiResponse<Quote>>(`/movie/${id}/quote`, { params }),
 
   // Characters
   getCharacters: (params?: Record<string, unknown>) =>
     apiClient.get<ApiResponse<Character>>("/character", { params }),
   getCharacter: (id: string) =>
     apiClient.get<ApiResponse<Character>>(`/character/${id}`),
-  getCharacterQuotes: (id: string) =>
-    apiClient.get<ApiResponse<Quote>>(`/character/${id}/quote`),
+  getCharacterQuotes: (id: string, params?: Record<string, unknown>) =>
+    apiClient.get<ApiResponse<Quote>>(`/character/${id}/quote`, { params }),
 
   // Quotes
   getQuotes: (params?: Record<string, unknown>) =>

@@ -122,7 +122,7 @@ export default function HomePage() {
 
         {moviesLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[...Array(6)].map((_, i) => (
+            {[...Array(9)].map((_, i) => (
               <div key={i} className="glass rounded-2xl h-64 animate-pulse" />
             ))}
           </div>
@@ -133,7 +133,7 @@ export default function HomePage() {
             animate="show"
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
           >
-            {movies?.docs.slice(0, 6).map((movie) => (
+            {movies?.docs.map((movie) => (
               <motion.div key={movie._id} variants={item}>
                 <Link
                   href={`/movies/${movie._id}`}
