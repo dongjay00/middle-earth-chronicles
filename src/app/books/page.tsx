@@ -109,7 +109,7 @@ export default function BooksPage() {
                                 className="glass rounded-xl p-4 hover:bg-white/10 transition-colors"
                               >
                                 <div className="flex items-start gap-3">
-                                  <span className="text-sm font-bold text-primary-400 mt-1">
+                                  <span className="text-sm font-bold text-primary-400">
                                     {chapterIdx + 1}
                                   </span>
                                   <span className="text-sm text-gray-300">
