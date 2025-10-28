@@ -15,7 +15,7 @@ export default function QuotesPage() {
     queryFn: () => api.getQuotes({ limit, page }).then((res) => res.data),
   });
 
-  const { data: randomQuote, refetch: refetchRandom } = useQuery({
+  const { data: randomQuote, refetch: refetchRandom, isFetching: isFetchingRandom } = useQuery({
     queryKey: ["random-quote"],
     queryFn: async () => {
       const total = 2384;
@@ -70,16 +70,21 @@ export default function QuotesPage() {
               <h2 className="text-2xl font-bold">Random Quote</h2>
               <button
                 onClick={() => refetchRandom()}
-                className="flex items-center gap-2 glass px-4 py-2 rounded-full hover:bg-white/10 transition-all hover:rotate-180"
+                disabled={isFetchingRandom}
+                className="flex items-center gap-2 glass px-4 py-2 rounded-full hover:bg-white/10 transition-all hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <MdRefresh />
-                <span>Refresh</span>
+                <MdRefresh className={isFetchingRandom ? "animate-spin" : ""} />
+                <span>{isFetchingRandom ? "Refreshing..." : "Refresh"}</span>
               </button>
             </div>
-            {randomQuote && (
-              <p className="text-3xl font-display italic text-gray-300 leading-relaxed">
-                &ldquo;{randomQuote.dialog}&rdquo;
-              </p>
+            {isFetchingRandom ? (
+              <div className="w-full h-16 rounded-lg animate-pulse bg-white/5"></div>
+            ) : (
+              randomQuote && (
+                <p className="text-3xl font-display italic text-gray-300 leading-relaxed">
+                  &ldquo;{randomQuote.dialog}&rdquo;
+                </p>
+              )
             )}
           </div>
         </motion.div>

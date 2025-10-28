@@ -59,26 +59,26 @@ export default function CharacterDetailPage() {
           animate={{ opacity: 1, y: 0 }}
           className="glass rounded-3xl p-12 mb-8"
         >
-          <div className="flex items-start justify-between mb-8">
-            <div>
-              <h1 className="text-5xl font-bold mb-4">{character.name}</h1>
+          <div className="mb-4">
+            <h1 className="text-5xl font-bold mb-4">{character.name}</h1>
+            <div className="flex items-center gap-4">
               {character.race && (
                 <span className="inline-block px-4 py-2 bg-primary-500/20 text-primary-400 rounded-full">
                   {character.race}
                 </span>
               )}
+              {character.wikiUrl && (
+                <a
+                  href={character.wikiUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 glass px-4 py-2 rounded-full hover:bg-white/10 transition-colors"
+                >
+                  <span>Wiki</span>
+                  <MdOpenInNew />
+                </a>
+              )}
             </div>
-            {character.wikiUrl && (
-              <a
-                href={character.wikiUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 glass px-4 py-2 rounded-full hover:bg-white/10 transition-colors"
-              >
-                <span>Wiki</span>
-                <MdOpenInNew />
-              </a>
-            )}
           </div>
 
           {details.length > 0 && (
